@@ -105,7 +105,8 @@ Contributions are welcome! If you'd like to contribute:
 </ol>
 
 ## License
-This project is licensed under the MIT License.
+This project is licensed under the GNU General Public License - a free, copyleft license for
+software and other kinds of works.
 
 ## Acknowledgments
 <ul>
