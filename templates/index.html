@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Horoscope</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Daily Horoscope</h1>
+    <p>Get your daily horoscope delivered to your inbox!</p>
+    <form method="POST">
+        <label for="zodiac_sign">Select Your Zodiac Sign:</label>
+        <select name="zodiac_sign" id="zodiac_sign">
+            <option value="aries">Aries</option>
+            <option value="taurus">Taurus</option>
+            <option value="gemini">Gemini</option>
+            <option value="cancer">Cancer</option>
+            <option value="leo">Leo</option>
+            <option value="virgo">Virgo</option>
+            <option value="libra">Libra</option>
+            <option value="scorpio">Scorpio</option>
+            <option value="sagittarius">Sagittarius</option>
+            <option value="capricorn">Capricorn</option>
+            <option value="aquarius">Aquarius</option>
+            <option value="pisces">Pisces</option>
+        </select>
+        <button type="submit">Get Your Horoscope</button>
+    </form>
+
+    {% if horoscope %}
+    <div class="horoscope">
+        <h2>Your Horoscope for Today ({{ request.form.get("zodiac_sign").capitalize() }}):</h2>
+        <p>{{ horoscope }}</p>
+    </div>
+    {% endif %}
+</body>
+</html>

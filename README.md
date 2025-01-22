@@ -1,9 +1,8 @@
 # Daily Horoscope Web App
-A web application that fetches daily horoscopes based on your zodiac sign and sends them to your email. Built with Python, Flask, and the Aztro API.
+A simple web application that fetches and displays daily horoscopes based on your zodiac sign. Built with Python, Flask, and the Aztro API.
 
 ## Features
-<li> Daily Horoscope: Get your daily horoscope for your zodiac sign. </li>
-<li> Email Delivery: Receive your horoscope directly in your inbox. </li>
+<li> Daily Horoscope: Get your daily horoscope for your zodiac sign. </li>  
 <li> User-Friendly Interface: Simple and intuitive web interface. </li>
 <li> Customizable: Easily extendable to include more features like user accounts or AI-generated horoscopes. </li>
 
@@ -11,7 +10,6 @@ A web application that fetches daily horoscopes based on your zodiac sign and se
 <li> Python: Backend logic and scripting. </li>
 <li> Flask: Web framework for building the app. </li>
 <li> Aztro API: Fetches daily horoscope data. </li>
-<li> SMTP: Sends emails using Python's smtplib. </li>
 <li> HTML/CSS: Frontend design and layout. </li>
 
 ## Getting Started
@@ -28,8 +26,8 @@ Follow these steps to set up and run the project locally.
 <ol>
 <li> Clone the repository: </li>
 
-`git clone https://github.com/your-username/daily-horoscope-app.git`
-`cd daily-horoscope-app`
+`git clone https://github.com/alexisvalentino/ai-horoscope-agent.git`
+`cd ai-horoscope-agent`
 
 <li> Set up a virtual environment (optional but recommended): </li>
 
@@ -58,16 +56,9 @@ Open your browser and go to `http://127.0.0.1:5000`
 <ol>
 <li> Select Your Zodiac Sign: </li>
 <ul><li> Choose your zodiac sign from the dropdown menu.</li></ul>
-  
-<li> Enter Your Email: </li>
-<ul><li> Provide your email address to receive the daily horoscope. </li></ul>
 
 <li> Get Your Horoscope: </li>
 <ul><li> Click the "Get Horoscope" button to fetch and display your horoscope. </li></ul>
-
-<li> Check Your Email: </li>
-<ul><li> The horoscope will also be sent to your email inbox. </li></ul>
-</ol>
   
 ## Deployment
 
