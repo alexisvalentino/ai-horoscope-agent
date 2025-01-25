@@ -7,32 +7,62 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Daily Horoscope</h1>
-    <p>Get your daily horoscope delivered to your inbox!</p>
-    <form method="POST">
-        <label for="zodiac_sign">Select Your Zodiac Sign:</label>
-        <select name="zodiac_sign" id="zodiac_sign">
-            <option value="aries">Aries</option>
-            <option value="taurus">Taurus</option>
-            <option value="gemini">Gemini</option>
-            <option value="cancer">Cancer</option>
-            <option value="leo">Leo</option>
-            <option value="virgo">Virgo</option>
-            <option value="libra">Libra</option>
-            <option value="scorpio">Scorpio</option>
-            <option value="sagittarius">Sagittarius</option>
-            <option value="capricorn">Capricorn</option>
-            <option value="aquarius">Aquarius</option>
-            <option value="pisces">Pisces</option>
-        </select>
-        <button type="submit">Get Your Horoscope</button>
-    </form>
+    <div class="container">
+        <h1>Daily Horoscope</h1>
+        
+        <!-- Error Messages -->
+        {% if error %}
+        <div class="error-message">
+            {{ error }}
+        </div>
+        {% endif %}
 
-    {% if horoscope %}
-    <div class="horoscope">
-        <h2>Your Horoscope for Today ({{ request.form.get("zodiac_sign").capitalize() }}):</h2>
-        <p>{{ horoscope }}</p>
+        <!-- Horoscope Form -->
+        <form method="POST">
+            <div class="form-group">
+                <label for="zodiac_sign">Your Zodiac Sign:</label>
+                <select name="zodiac_sign" id="zodiac_sign">
+                    {% for sign in ['scorpio', 'aries', 'taurus', 'gemini', 'cancer', 'leo', 
+                                   'virgo', 'libra', 'sagittarius', 'capricorn', 'aquarius', 'pisces'] %}
+                    <option value="{{ sign }}" 
+                            {% if zodiac_sign == sign %}selected{% endif %}>
+                        {{ sign.capitalize() }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="date">Date Range:</label>
+                <select name="date" id="date">
+                    {% for date_option in ['today', 'tomorrow', 'yesterday'] %}
+                    <option value="{{ date_option }}"
+                            {% if request.form.get('date', 'today') == date_option %}selected{% endif %}>
+                        {{ date_option.capitalize() }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit" class="btn">Get Horoscope</button>
+        </form>
+
+        <!-- Horoscope Display -->
+        {% if horoscope %}
+        <div class="horoscope-card">
+            <h2>{{ zodiac_sign.capitalize() }} Horoscope ({{ horoscope.date }})</h2>
+            <div class="horoscope-content">
+                <p class="prediction">{{ horoscope.horoscope }}</p>
+                <div class="details">
+                    <p><span>Compatibility:</span> {{ horoscope.compatibility }}</p>
+                    <p><span>Mood:</span> {{ horoscope.mood }}</p>
+                    <p><span>Lucky Color:</span> {{ horoscope.color }}</p>
+                    <p><span>Lucky Number:</span> {{ horoscope.lucky_number }}</p>
+                    <p><span>Lucky Time:</span> {{ horoscope.lucky_time }}</p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
     </div>
-    {% endif %}
 </body>
 </html>
