@@ -3,56 +3,59 @@ import requests
 from dotenv import load_dotenv
 import os
 
-# Load environment variables from .env file
 load_dotenv()
 
 app = Flask(__name__)
 
-# RapidAPI configuration (from .env)
+# New API Configuration
 RAPIDAPI_KEY = os.getenv("RAPIDAPI_KEY")
-RAPIDAPI_HOST = "horoscopeapi-horoscope-v1.p.rapidapi.com"
-API_URL = "https://horoscopeapi-horoscope-v1.p.rapidapi.com/daily"
+RAPIDAPI_HOST = "daily-horoscope-advanced-api.p.rapidapi.com"
+API_URL = "https://daily-horoscope-advanced-api.p.rapidapi.com/api/Daily-Horoscope-New/"
 
-def get_horoscope(sign, date="today"):
-    """Fetch horoscope data from the API"""
-    headers = {
-        "X-RapidAPI-Key": RAPIDAPI_KEY,
-        "X-RapidAPI-Host": RAPIDAPI_HOST
-    }
-    params = {
-        "date": date,
-        "sign": sign.lower()  # Ensure lowercase for API compatibility
-    }
-    
+def get_horoscope(zodiac_sign, time_period="daily"):
+    """Fetch horoscope from the new advanced API"""
     try:
+        headers = {
+            "x-rapidapi-key": RAPIDAPI_KEY,
+            "x-rapidapi-host": RAPIDAPI_HOST
+        }
+        
+        params = {
+            "zodiacSign": zodiac_sign.capitalize(),  # API expects capitalized signs
+            "timePeriod": time_period.lower()        # daily/weekly/monthly
+        }
+        
         response = requests.get(API_URL, headers=headers, params=params)
-        response.raise_for_status()  # Raise exception for HTTP errors
+        response.raise_for_status()
         return response.json()
-    except requests.exceptions.RequestException:
+        
+    except Exception as e:
+        print(f"API Error: {str(e)}")
         return None
 
 @app.route("/", methods=["GET", "POST"])
 def home():
     horoscope = None
     error = None
+    zodiac_sign = "taurus"
+    time_period = "daily"
     
     if request.method == "POST":
-        zodiac_sign = request.form.get("zodiac_sign")
-        selected_date = request.form.get("date", "today")  # Default to 'today'
+        zodiac_sign = request.form.get("zodiac_sign", "taurus")
+        time_period = request.form.get("time_period", "daily")
+        horoscope = get_horoscope(zodiac_sign, time_period)
         
-        # Validate input
-        if not zodiac_sign:
-            error = "Please select a zodiac sign."
-        else:
-            horoscope = get_horoscope(zodiac_sign, selected_date)
-            if not horoscope:
-                error = "Failed to fetch horoscope. Please try again later."
-    
+        if not horoscope:
+            error = "Failed to fetch horoscope. Please try again later."
+        elif "message" in horoscope:  # Handle API error messages
+            error = horoscope.get("message")
+
     return render_template(
         "index.html",
         horoscope=horoscope,
         error=error,
-        zodiac_sign=request.form.get("zodiac_sign", "scorpio")  # Default to Scorpio
+        zodiac_sign=zodiac_sign,
+        time_period=time_period
     )
 
 if __name__ == "__main__":

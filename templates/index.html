@@ -3,66 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily Horoscope</title>
+    <title>Advanced Horoscope</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="container">
-        <h1>Daily Horoscope</h1>
-        
-        <!-- Error Messages -->
+        <h1>Advanced Horoscope</h1>
+
         {% if error %}
         <div class="error-message">
             {{ error }}
         </div>
         {% endif %}
 
-        <!-- Horoscope Form -->
         <form method="POST">
-            <div class="form-group">
-                <label for="zodiac_sign">Your Zodiac Sign:</label>
-                <select name="zodiac_sign" id="zodiac_sign">
-                    {% for sign in ['scorpio', 'aries', 'taurus', 'gemini', 'cancer', 'leo', 
-                                   'virgo', 'libra', 'sagittarius', 'capricorn', 'aquarius', 'pisces'] %}
-                    <option value="{{ sign }}" 
-                            {% if zodiac_sign == sign %}selected{% endif %}>
-                        {{ sign.capitalize() }}
-                    </option>
-                    {% endfor %}
-                </select>
-            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="zodiac_sign">Zodiac Sign:</label>
+                    <select name="zodiac_sign" id="zodiac_sign">
+                        {% for sign in ['aries', 'taurus', 'gemini', 'cancer', 'leo', 'virgo', 
+                                       'libra', 'scorpio', 'sagittarius', 'capricorn', 'aquarius', 'pisces'] %}
+                        <option value="{{ sign }}" {% if zodiac_sign == sign %}selected{% endif %}>
+                            {{ sign.capitalize() }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
 
-            <div class="form-group">
-                <label for="date">Date Range:</label>
-                <select name="date" id="date">
-                    {% for date_option in ['today', 'tomorrow', 'yesterday'] %}
-                    <option value="{{ date_option }}"
-                            {% if request.form.get('date', 'today') == date_option %}selected{% endif %}>
-                        {{ date_option.capitalize() }}
-                    </option>
-                    {% endfor %}
-                </select>
+                <div class="form-group">
+                    <label for="time_period">Time Period:</label>
+                    <select name="time_period" id="time_period">
+                        {% for period in ['daily', 'weekly', 'monthly'] %}
+                        <option value="{{ period }}" {% if time_period == period %}selected{% endif %}>
+                            {{ period.capitalize() }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
             </div>
 
             <button type="submit" class="btn">Get Horoscope</button>
         </form>
 
-        <!-- Horoscope Display -->
         {% if horoscope %}
         <div class="horoscope-card">
-            <h2>{{ zodiac_sign.capitalize() }} Horoscope ({{ horoscope.date }})</h2>
+            <h2>{{ zodiac_sign.capitalize() }} {{ time_period.capitalize() }} Horoscope</h2>
+            
             <div class="horoscope-content">
-                <p class="prediction">{{ horoscope.horoscope }}</p>
-                <div class="details">
-                    <p><span>Compatibility:</span> {{ horoscope.compatibility }}</p>
-                    <p><span>Mood:</span> {{ horoscope.mood }}</p>
-                    <p><span>Lucky Color:</span> {{ horoscope.color }}</p>
-                    <p><span>Lucky Number:</span> {{ horoscope.lucky_number }}</p>
-                    <p><span>Lucky Time:</span> {{ horoscope.lucky_time }}</p>
+                {% if time_period == 'daily' %}
+                <div class="daily-horoscope">
+                    <p class="prediction">{{ horoscope.horoscope }}</p>
+                    <div class="details">
+                        <p><span>Mood:</span> {{ horoscope.mood }}</p>
+                        <p><span>Compatibility:</span> {{ horoscope.compatibility }}</p>
+                        <p><span>Lucky Number:</span> {{ horoscope.lucky_number }}</p>
+                    </div>
                 </div>
-            </div>
-        </div>
-        {% endif %}
-    </div>
-</body>
-</html>
+                
+                {% elif time_period == 'weekly' %}
+                <div class="weekly-horoscope">
+                    {% for day in horoscope.weekly_horoscope %}
+                    <div class
