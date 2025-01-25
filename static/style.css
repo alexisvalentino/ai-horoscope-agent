@@ -1,4 +1,37 @@
-/* Add these new styles */
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #6c5ce7;
+    margin-bottom: 1.5rem;
+}
+
+.error-message {
+    background: #ffebee;
+    color: #c62828;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid #c62828;
+}
+
+/* Form Styles */
 .form-row {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -6,6 +39,84 @@
     margin-bottom: 1.5rem;
 }
 
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #555;
+}
+
+.form-group select {
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: #f9f9f9;
+    color: #333;
+}
+
+.btn {
+    width: 100%;
+    padding: 0.75rem;
+    background: #6c5ce7;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.btn:hover {
+    background: #5a4ad1;
+}
+
+/* Horoscope Card Styles */
+.horoscope-card {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 12px;
+    border-left: 4px solid #6c5ce7;
+}
+
+.horoscope-card h2 {
+    color: #6c5ce7;
+    margin-bottom: 1.5rem;
+}
+
+.horoscope-content {
+    margin-top: 1.5rem;
+}
+
+.daily-horoscope .prediction {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+}
+
+.daily-horoscope .details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.daily-horoscope .details p {
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.daily-horoscope .details span {
+    font-weight: 600;
+    color: #6c5ce7;
+}
+
+/* Weekly Horoscope Styles */
 .weekly-horoscope {
     display: grid;
     gap: 1.5rem;
@@ -13,12 +124,35 @@
 }
 
 .day-card {
-    background: #f8f9fa;
+    background: #fff;
     padding: 1.5rem;
     border-radius: 8px;
     border-left: 4px solid #6c5ce7;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+.day-card h3 {
+    color: #6c5ce7;
+    margin-bottom: 1rem;
+}
+
+.day-card .prediction {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.day-card .details p {
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.day-card .details span {
+    font-weight: 600;
+    color: #6c5ce7;
+}
+
+/* Monthly Horoscope Styles */
 .monthly-horoscope .overview {
     font-size: 1.1rem;
     line-height: 1.8;
@@ -32,9 +166,11 @@
 }
 
 .detail-block {
-    background: #f8f9fa;
+    background: #fff;
     padding: 1.5rem;
     border-radius: 8px;
+    border-left: 4px solid #6c5ce7;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .detail-block h4 {
@@ -44,6 +180,8 @@
 
 .detail-block ul {
     list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 .detail-block li {
@@ -53,16 +191,4 @@
 
 .detail-block li:last-child {
     border-bottom: none;
-}
-
-/* Update existing styles */
-.horoscope-content {
-    margin-top: 1.5rem;
-}
-
-.daily-horoscope .details {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 1rem;
-    margin-top: 1.5rem;
 }

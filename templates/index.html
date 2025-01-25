@@ -63,4 +63,41 @@
                 {% elif time_period == 'weekly' %}
                 <div class="weekly-horoscope">
                     {% for day in horoscope.weekly_horoscope %}
-                    <div class
+                    <div class="day-card">
+                        <h3>{{ day.day }}</h3>
+                        <p class="prediction">{{ day.prediction }}</p>
+                        <div class="details">
+                            <p><span>Mood:</span> {{ day.mood }}</p>
+                            <p><span>Lucky Color:</span> {{ day.lucky_color }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                {% elif time_period == 'monthly' %}
+                <div class="monthly-horoscope">
+                    <div class="overview">
+                        {{ horoscope.overview }}
+                    </div>
+                    <div class="monthly-details">
+                        <div class="detail-block">
+                            <h4>Key Dates</h4>
+                            <ul>
+                                {% for date in horoscope.key_dates %}
+                                <li>{{ date.date }}: {{ date.description }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="detail-block">
+                            <h4>Advice</h4>
+                            <p>{{ horoscope.advice }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
