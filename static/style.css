@@ -192,3 +192,49 @@ h1 {
 .detail-block li:last-child {
     border-bottom: none;
 }
+
+/* Debug Section Styles */
+.debug-section {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 12px;
+    border-left: 4px solid #ff6b6b;
+}
+
+.debug-section h3 {
+    color: #ff6b6b;
+    margin-bottom: 1rem;
+}
+
+.debug-section pre {
+    background: #fff;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    overflow-x: auto;
+    font-family: monospace;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #333;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .container {
+        margin: 1rem;
+        padding: 1rem;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .daily-horoscope .details {
+        grid-template-columns: 1fr;
+    }
+
+    .debug-section pre {
+        font-size: 0.8rem;
+    }
+}

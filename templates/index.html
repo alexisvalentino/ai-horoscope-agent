@@ -10,12 +10,14 @@
     <div class="container">
         <h1>Advanced Horoscope</h1>
 
+        <!-- Error Message -->
         {% if error %}
         <div class="error-message">
             {{ error }}
         </div>
         {% endif %}
 
+        <!-- Form -->
         <form method="POST">
             <div class="form-row">
                 <div class="form-group">
@@ -45,6 +47,7 @@
             <button type="submit" class="btn">Get Horoscope</button>
         </form>
 
+        <!-- Horoscope Display -->
         {% if horoscope %}
         <div class="horoscope-card">
             <h2>{{ zodiac_sign.capitalize() }} {{ time_period.capitalize() }} Horoscope</h2>
@@ -98,6 +101,16 @@
             </div>
         </div>
         {% endif %}
+
+        <!-- Debug Section -->
+        <div class="debug-section">
+            <h3>Debug Information</h3>
+            <p><strong>Zodiac Sign:</strong> {{ zodiac_sign }}</p>
+            <p><strong>Time Period:</strong> {{ time_period }}</p>
+            <p><strong>Error:</strong> {{ error }}</p>
+            <p><strong>Horoscope Data:</strong></p>
+            <pre>{{ horoscope | tojson(indent=4) }}</pre>
+        </div>
     </div>
 </body>
 </html>

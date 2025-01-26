@@ -51,6 +51,12 @@ def home():
         # Fetch horoscope from API
         horoscope = get_horoscope(zodiac_sign, time_period)
         
+        # Debug: Print the variables being passed to the template
+        print(f"Horoscope: {horoscope}")
+        print(f"Error: {error}")
+        print(f"Zodiac Sign: {zodiac_sign}")
+        print(f"Time Period: {time_period}")
+        
         # Debug: Use hardcoded data if API fails or returns invalid data
         if not horoscope:
             error = "Failed to fetch horoscope. Please try again later."
