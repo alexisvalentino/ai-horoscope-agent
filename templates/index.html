@@ -1,116 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced Horoscope</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <div class="container">
-        <h1>Advanced Horoscope</h1>
+import requests
+from flask import Flask, render_template, request
 
-        <!-- Error Message -->
-        {% if error %}
-        <div class="error-message">
-            {{ error }}
-        </div>
-        {% endif %}
+app = Flask(__name__)
 
-        <!-- Form -->
-        <form method="POST">
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="zodiac_sign">Zodiac Sign:</label>
-                    <select name="zodiac_sign" id="zodiac_sign">
-                        {% for sign in ['aries', 'taurus', 'gemini', 'cancer', 'leo', 'virgo', 
-                                       'libra', 'scorpio', 'sagittarius', 'capricorn', 'aquarius', 'pisces'] %}
-                        <option value="{{ sign }}" {% if zodiac_sign == sign %}selected{% endif %}>
-                            {{ sign.capitalize() }}
-                        </option>
-                        {% endfor %}
-                    </select>
-                </div>
+# List of valid zodiac signs and time periods
+VALID_ZODIAC_SIGNS = [
+    "aries", "taurus", "gemini", "cancer", "leo", "virgo", 
+    "libra", "scorpio", "sagittarius", "capricorn", "aquarius", "pisces"
+]
+VALID_TIME_PERIODS = ["today", "yesterday", "tomorrow"]
 
-                <div class="form-group">
-                    <label for="time_period">Time Period:</label>
-                    <select name="time_period" id="time_period">
-                        {% for period in ['daily', 'weekly', 'monthly'] %}
-                        <option value="{{ period }}" {% if time_period == period %}selected{% endif %}>
-                            {{ period.capitalize() }}
-                        </option>
-                        {% endfor %}
-                    </select>
-                </div>
-            </div>
-
-            <button type="submit" class="btn">Get Horoscope</button>
-        </form>
-
-        <!-- Horoscope Display -->
-        {% if horoscope %}
-        <div class="horoscope-card">
-            <h2>{{ zodiac_sign.capitalize() }} {{ time_period.capitalize() }} Horoscope</h2>
-            
-            <div class="horoscope-content">
-                {% if time_period == 'daily' %}
-                <div class="daily-horoscope">
-                    <p class="prediction">{{ horoscope.horoscope }}</p>
-                    <div class="details">
-                        <p><span>Mood:</span> {{ horoscope.mood }}</p>
-                        <p><span>Compatibility:</span> {{ horoscope.compatibility }}</p>
-                        <p><span>Lucky Number:</span> {{ horoscope.lucky_number }}</p>
-                    </div>
-                </div>
-                
-                {% elif time_period == 'weekly' %}
-                <div class="weekly-horoscope">
-                    {% for day in horoscope.weekly_horoscope %}
-                    <div class="day-card">
-                        <h3>{{ day.day }}</h3>
-                        <p class="prediction">{{ day.prediction }}</p>
-                        <div class="details">
-                            <p><span>Mood:</span> {{ day.mood }}</p>
-                            <p><span>Lucky Color:</span> {{ day.lucky_color }}</p>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-
-                {% elif time_period == 'monthly' %}
-                <div class="monthly-horoscope">
-                    <div class="overview">
-                        {{ horoscope.overview }}
-                    </div>
-                    <div class="monthly-details">
-                        <div class="detail-block">
-                            <h4>Key Dates</h4>
-                            <ul>
-                                {% for date in horoscope.key_dates %}
-                                <li>{{ date.date }}: {{ date.description }}</li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                        <div class="detail-block">
-                            <h4>Advice</h4>
-                            <p>{{ horoscope.advice }}</p>
-                        </div>
-                    </div>
-                </div>
-                {% endif %}
-            </div>
-        </div>
-        {% endif %}
-
-        <!-- Debug Section -->
-        <div class="debug-section">
-            <h3>Debug Information</h3>
-            <p><strong>Zodiac Sign:</strong> {{ zodiac_sign }}</p>
-            <p><strong>Time Period:</strong> {{ time_period }}</p>
-            <p><strong>Error:</strong> {{ error }}</p>
-            <p><strong>Horoscope Data:</strong></p>
-            <pre>{{ horoscope | tojson(indent=4) }}</pre>
-        </div>
-    </div>
-</body>
-</html>
+def fetch_horoscope(zodiac_sign, time_period):
+    """Fetch horoscope data from the Aztro API."""
+    try:
+        response = requests.post(
+            f"https://aztro.sameerkumar.website/?sign={zodiac_sign}&day={time_period}"
+        )
+        if
