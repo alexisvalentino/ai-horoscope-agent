@@ -1,86 +1,58 @@
-from flask import Flask, render_template, request
 import requests
-from dotenv import load_dotenv
-import os
-
-load_dotenv()
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
-# New API Configuration
-RAPIDAPI_KEY = os.getenv("RAPIDAPI_KEY")
-RAPIDAPI_HOST = "daily-horoscope-advanced-api.p.rapidapi.com"
-API_URL = "https://daily-horoscope-advanced-api.p.rapidapi.com/api/Daily-Horoscope-New/"
+# List of valid zodiac signs and time periods
+VALID_ZODIAC_SIGNS = [
+    "aries", "taurus", "gemini", "cancer", "leo", "virgo", 
+    "libra", "scorpio", "sagittarius", "capricorn", "aquarius", "pisces"
+]
+VALID_TIME_PERIODS = ["today", "yesterday", "tomorrow"]
 
-def get_horoscope(zodiac_sign, time_period="daily"):
-    """Fetch horoscope from the new advanced API"""
+def fetch_horoscope(zodiac_sign, time_period):
+    """Fetch horoscope data from the Aztro API."""
     try:
-        headers = {
-            "x-rapidapi-key": RAPIDAPI_KEY,
-            "x-rapidapi-host": RAPIDAPI_HOST
-        }
-        
-        params = {
-            "zodiacSign": zodiac_sign.capitalize(),  # API expects capitalized signs
-            "timePeriod": time_period.lower()        # daily/weekly/monthly
-        }
-        
-        response = requests.get(API_URL, headers=headers, params=params)
-        response.raise_for_status()
-        
-        # Debug: Print the API response
-        print("API Response:", response.json())
-        
-        return response.json()
-        
+        response = requests.post(
+            f"https://aztro.sameerkumar.website/?sign={zodiac_sign}&day={time_period}"
+        )
+        if response.status_code == 200:
+            return response.json(), None
+        else:
+            return None, "Failed to fetch horoscope data. Please try again later."
     except Exception as e:
-        print(f"API Error: {str(e)}")
-        return None
+        return None, str(e)
 
 @app.route("/", methods=["GET", "POST"])
-def home():
-    horoscope = None
+def index():
+    horoscope = {}
     error = None
-    zodiac_sign = "leo"  # Default sign
-    time_period = "daily"  # Default period
-    
+    zodiac_sign = ""
+    time_period = ""
+
     if request.method == "POST":
-        zodiac_sign = request.form.get("zodiac_sign", "leo")
-        time_period = request.form.get("time_period", "daily")
-        
-        # Fetch horoscope from API
-        horoscope = get_horoscope(zodiac_sign, time_period)
-        
-        # Debug: Print the variables being passed to the template
-        print(f"Horoscope: {horoscope}")
-        print(f"Error: {error}")
-        print(f"Zodiac Sign: {zodiac_sign}")
-        print(f"Time Period: {time_period}")
-        
-        # Debug: Use hardcoded data if API fails or returns invalid data
-        if not horoscope:
-            error = "Failed to fetch horoscope. Please try again later."
-            horoscope = {
-                "horoscope": "Today is a great day for Leos!",
-                "mood": "Happy",
-                "compatibility": "Gemini",
-                "lucky_number": "7"
-            }
-        elif "message" in horoscope:  # Handle API error messages
-            error = horoscope.get("message")
-            horoscope = {
-                "horoscope": "No prediction available.",
-                "mood": "N/A",
-                "compatibility": "N/A",
-                "lucky_number": "N/A"
-            }
+        zodiac_sign = request.form.get("zodiac_sign", "").lower()
+        time_period = request.form.get("time_period", "").lower()
+
+        # Validate user input
+        if zodiac_sign not in VALID_ZODIAC_SIGNS:
+            error = "Invalid zodiac sign. Please select a valid sign."
+        elif time_period not in VALID_TIME_PERIODS:
+            error = "Invalid time period. Please select 'today', 'yesterday', or 'tomorrow'."
+        else:
+            # Fetch horoscope data
+            horoscope, api_error = fetch_horoscope(zodiac_sign, time_period)
+            if api_error:
+                error = api_error
 
     return render_template(
         "index.html",
         horoscope=horoscope,
         error=error,
         zodiac_sign=zodiac_sign,
-        time_period=time_period
+        time_period=time_period,
+        valid_zodiac_signs=VALID_ZODIAC_SIGNS,
+        valid_time_periods=VALID_TIME_PERIODS
     )
 
 if __name__ == "__main__":
