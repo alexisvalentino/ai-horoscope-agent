@@ -1,19 +1,82 @@
-import requests
-from flask import Flask, render_template, request
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Horoscope</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Advanced Horoscope</h1>
 
-app = Flask(__name__)
+        <!-- Error Message -->
+        {% if error %}
+        <div class="error-message">
+            {{ error }}
+        </div>
+        {% endif %}
 
-# List of valid zodiac signs and time periods
-VALID_ZODIAC_SIGNS = [
-    "aries", "taurus", "gemini", "cancer", "leo", "virgo", 
-    "libra", "scorpio", "sagittarius", "capricorn", "aquarius", "pisces"
-]
-VALID_TIME_PERIODS = ["today", "yesterday", "tomorrow"]
+        <!-- Form -->
+        <form method="POST">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="zodiac_sign">Zodiac Sign:</label>
+                    <select name="zodiac_sign" id="zodiac_sign">
+                        {% for sign in valid_zodiac_signs %}
+                        <option value="{{ sign }}" {% if zodiac_sign == sign %}selected{% endif %}>
+                            {{ sign.capitalize() }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
 
-def fetch_horoscope(zodiac_sign, time_period):
-    """Fetch horoscope data from the Aztro API."""
-    try:
-        response = requests.post(
-            f"https://aztro.sameerkumar.website/?sign={zodiac_sign}&day={time_period}"
-        )
-        if
+                <div class="form-group">
+                    <label for="time_period">Time Period:</label>
+                    <select name="time_period" id="time_period">
+                        {% for period in valid_time_periods %}
+                        <option value="{{ period }}" {% if time_period == period %}selected{% endif %}>
+                            {{ period.capitalize() }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit" class="btn">Get Horoscope</button>
+        </form>
+
+        <!-- Horoscope Display -->
+        {% if horoscope %}
+        <div class="horoscope-card">
+            <h2>{{ zodiac_sign.capitalize() }} {{ time_period.capitalize() }} Horoscope</h2>
+            
+            <div class="horoscope-content">
+                <div class="daily-horoscope">
+                    <p class="prediction">{{ horoscope.description }}</p>
+                    <div class="details">
+                        <p><span>Mood:</span> {{ horoscope.mood }}</p>
+                        <p><span>Compatibility:</span> {{ horoscope.compatibility }}</p>
+                        <p><span>Lucky Number:</span> {{ horoscope.lucky_number }}</p>
+                        <p><span>Lucky Time:</span> {{ horoscope.lucky_time }}</p>
+                        <p><span>Color:</span> {{ horoscope.color }}</p>
+                        <p><span>Date Range:</span> {{ horoscope.date_range }}</p>
+                        <p><span>Current Date:</span> {{ horoscope.current_date }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Debug Section -->
+        <div class="debug-section">
+            <h3>Debug Information</h3>
+            <p><strong>Zodiac Sign:</strong> {{ zodiac_sign }}</p>
+            <p><strong>Time Period:</strong> {{ time_period }}</p>
+            <p><strong>Error:</strong> {{ error }}</p>
+            <p><strong>Horoscope Data:</strong></p>
+            <pre>{{ horoscope | tojson(indent=4) }}</pre>
+        </div>
+    </div>
+</body>
+</html>
